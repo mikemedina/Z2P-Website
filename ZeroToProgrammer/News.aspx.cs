@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using ZeroToProgrammer.Tables;
+using System.Data;
 
 namespace ZeroToProgrammer
 {
@@ -13,14 +15,10 @@ namespace ZeroToProgrammer
             lblError.Text = string.Empty;
             lblError.Visible = false;
 
-            SqlConnection conn = new SqlConnection("Server=MIKES_LAPTOP\\SQLEXPRESS;Database=ZtoP;Trusted_Connection=True;");
-            SqlCommand cmd = new SqlCommand("SELECT title, content, modified_date FROM News", conn);
-            SqlDataReader reader;
-
+            DataTable news;
             try
             {
-                conn.Open();
-                reader = cmd.ExecuteReader();
+                news = NewsTable.Get_News();
             }
             catch (Exception ex)
             {
@@ -29,33 +27,31 @@ namespace ZeroToProgrammer
                 return;
             }
 
-            if(!reader.HasRows)
+            if(news.Rows.Count == 0)
             {
                 lblError.Text = "No results found";
                 lblError.Visible = true;
                 return;
             }
 
-            while(reader.Read())
+            foreach (DataRow row in news.Rows)
             {
                 Panel panel = new Panel();
                 HtmlGenericControl header = new HtmlGenericControl("h2");
-                header.InnerHtml = reader.GetString(0);
+                header.InnerHtml = row["title"].ToString();
                 panel.Controls.Add(header);
 
                 HtmlGenericControl date = new HtmlGenericControl("p");
-                date.InnerHtml = reader.GetDateTime(2).ToString("MM/dd/yy");
+                date.InnerHtml = ((DateTime)row["modified_date"]).ToString("MM/dd/yy");
                 panel.Controls.Add(date);
 
                 HtmlGenericControl body = new HtmlGenericControl("p");
-                body.InnerHtml = reader.GetString(1);
+                body.InnerHtml = row["content"].ToString();
                 panel.Controls.Add(body);
 
                 pnlNews.Controls.Add(panel);
             }
 
-            reader.Close();
-            conn.Close();
         }
     }
 }
