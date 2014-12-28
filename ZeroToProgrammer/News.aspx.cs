@@ -15,6 +15,13 @@ namespace ZeroToProgrammer
             lblError.Text = string.Empty;
             lblError.Visible = false;
 
+            Build_News_Section();
+            
+        }
+
+        private void Build_News_Section()
+        {
+
             DataTable news;
             try
             {
@@ -27,7 +34,7 @@ namespace ZeroToProgrammer
                 return;
             }
 
-            if(news.Rows.Count == 0)
+            if (news.Rows.Count == 0)
             {
                 lblError.Text = "No results found";
                 lblError.Visible = true;

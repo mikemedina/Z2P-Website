@@ -9,7 +9,6 @@ namespace ZeroToProgrammer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Reset_Labels();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -28,12 +27,26 @@ namespace ZeroToProgrammer
                 return;
             }
 
+            Reset_Page();
+
             lblSuccess.Text = "Submission Successful";
             lblSuccess.Visible = true;
 
-            txtTitle.Text = string.Empty;
-            txtContent.Text = string.Empty;
         }
+
+        private void Reset_Page()
+            {
+
+                // Reset labels
+                lblError.Text = string.Empty;
+                lblError.Visible = false;
+                lblSuccess.Visible = false;
+
+                // Reset fields
+                txtTitle.Text = string.Empty;
+                txtContent.Text = string.Empty;
+
+            }
 
         private bool Entry_Is_Valid()
         {
@@ -53,11 +66,5 @@ namespace ZeroToProgrammer
             return true;
         }
         
-        private void Reset_Labels()
-        {
-            lblError.Text = string.Empty;
-            lblError.Visible = false;
-            lblSuccess.Visible = false;
-        }
     }
 }
