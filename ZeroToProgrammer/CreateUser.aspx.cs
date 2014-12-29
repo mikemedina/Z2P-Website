@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ZeroToProgrammer.Tables;
@@ -97,6 +98,30 @@ namespace ZeroToProgrammer
 
                 lblUserName.ForeColor = System.Drawing.Color.Red;
                 return false;
+            }
+
+            DataTable users;
+            try
+            {
+                users = UsersTable.Get_Users();
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Error loading from database: \n" + ex.Message;
+                lblError.Visible = true;
+                return false;
+            }
+
+            foreach (DataRow row in users.Rows)
+            {
+                if (txtUserName.Text == row["user_name"].ToString())
+                {
+                    lblError.Text = "This User Name already exists";
+                    lblError.Visible = true;
+
+                    lblUserName.ForeColor = System.Drawing.Color.Red;
+                    return false;
+                }
             }
 
             // Password
