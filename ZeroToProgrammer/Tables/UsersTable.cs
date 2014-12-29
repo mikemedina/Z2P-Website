@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System;
 
 namespace ZeroToProgrammer.Tables
 {
@@ -16,9 +17,9 @@ namespace ZeroToProgrammer.Tables
                 conn.Open();
 
                 SqlCommand cmd = new SqlCommand(
-                    string.Format("INSERT INTO Users (user_name, password, email, first_name, last_name, age)" +
-                                   "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
-                                   user_name, password, email, first_name, last_name, age), conn);
+                    string.Format("INSERT INTO Users (user_name, password, email, first_name, last_name, age, last_login)" +
+                                   "VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')",
+                                   user_name, password, email, first_name, last_name, age, DateTime.Now), conn);
 
                 cmd.ExecuteNonQuery();
 
@@ -32,7 +33,7 @@ namespace ZeroToProgrammer.Tables
 
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT user_name, password FROM Users", conn);
+                SqlCommand cmd = new SqlCommand("SELECT user_name, password, first_name FROM Users", conn);
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
