@@ -33,7 +33,7 @@ namespace ZeroToProgrammer.Tables
 
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT user_name, password, first_name FROM Users", conn);
+                SqlCommand cmd = new SqlCommand("SELECT user_name, password, first_name, last_login FROM Users", conn);
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
