@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Web.UI.WebControls;
 using ZeroToProgrammer.Tables;
 
 namespace ZeroToProgrammer

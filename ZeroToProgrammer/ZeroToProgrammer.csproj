@@ -67,6 +67,7 @@
   <ItemGroup>
     <Content Include="AddContent.aspx" />
     <Content Include="CreateUser.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="News.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -86,6 +87,13 @@
     </Compile>
     <Compile Include="CreateUser.aspx.designer.cs">
       <DependentUpon>CreateUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="News.aspx.cs">
       <DependentUpon>News.aspx</DependentUpon>
