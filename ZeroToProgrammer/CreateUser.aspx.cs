@@ -104,8 +104,8 @@ namespace ZeroToProgrammer
 
             DataTable users;
             try
-            {// TODO Make get_users function in userstable.cs
-                users = UsersTable.Get_User(txtUserName.Text);
+            {
+                users = UsersTable.Get_User_Names();
             }
             catch (Exception ex)
             {

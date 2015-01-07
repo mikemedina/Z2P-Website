@@ -5,3 +5,9 @@ C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgramm
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.dll
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.pdb
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\bin\BCrypt.Net.dll
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\bin\ZeroToProgrammer.dll.config
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\bin\ZeroToProgrammer.dll
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\bin\ZeroToProgrammer.pdb
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.csprojResolveAssemblyReference.cache
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.dll
+C:\Users\Mike\Desktop\Z2P-Website\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.pdb

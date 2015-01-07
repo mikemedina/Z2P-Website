@@ -16,6 +16,18 @@ namespace ZeroToProgrammer
 
             Reset_Colors();
 
+            DataTable user;
+            try
+            {
+                user = UsersTable.Get_User(txtUserName.Text);
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Error loading from database: \n" + ex.Message;
+                lblError.Visible = true;
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(txtUserName.Text))
             {
                 lblError.Visible = true;
@@ -34,19 +46,16 @@ namespace ZeroToProgrammer
                 return;
             }
 
-            DataTable user;
-            try
+            if (user.Rows.Count == 0)
             {
-                user = UsersTable.Get_User(txtUserName.Text);
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Error loading from database: \n" + ex.Message;
                 lblError.Visible = true;
+                lblError.Text = "Incorrect User Name";
+
+                lblUserName.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 
-            if (BCrypt.Net.BCrypt.Verify(txtPassword.Text, user.Select("password").ToString()))
+            if (BCrypt.Net.BCrypt.Verify(txtPassword.Text, user.Rows[0]["password"].ToString()))
             {
                 // Successful Login
                 Reset_Page();
@@ -54,16 +63,18 @@ namespace ZeroToProgrammer
 
                 lblWelcome.Visible = true;
 
-                DateTime last_login = DateTime.Parse(user.Select("last_login").ToString());
-                if (!string.IsNullOrWhiteSpace(user.Select("first_name").ToString()))
+                DateTime last_login = DateTime.Parse(user.Rows[0]["last_login"].ToString());
+                if (!string.IsNullOrWhiteSpace(user.Rows[0]["first_name"].ToString()))
                 {
-                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was at {1: hh:mm} on {1: MM/dd/yy}", user.Select("first_name").ToString(), last_login);
-                    return;
+                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was at {1: hh:mm} on {1: MM/dd/yy}", user.Rows[0]["first_name"].ToString(), last_login);
                 }
                 else
                 {
-                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was {1}", user.Select("user_name").ToString(), last_login);
+                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was {1}", user.Rows[0]["user_name"].ToString(), last_login);
                 }
+
+                UsersTable.Update_Last_Login(user.Rows[0]["user_name"].ToString());
+                return;
             }
             else
             {
@@ -92,7 +103,6 @@ namespace ZeroToProgrammer
             lblWelcome.Visible = false;
             lblWelcome.Text = string.Empty;
             lblSuccess.Visible = false;
-            Reset_Colors();
 
             // Reset Fields
             txtUserName.Text = string.Empty;

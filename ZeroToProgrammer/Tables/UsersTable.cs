@@ -28,12 +28,13 @@ namespace ZeroToProgrammer.Tables
 
         public static DataTable Get_User(string user_name)
         {
+
             using (SqlConnection conn = new SqlConnection(Conn_String))
             {
 
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT user_name, password, first_name, last_login FROM Users WHERE user_name = " + user_name, conn);
+                SqlCommand cmd = new SqlCommand("SELECT user_name, password, first_name, last_login FROM Users WHERE user_name = '" + user_name + "'", conn);
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -41,8 +42,44 @@ namespace ZeroToProgrammer.Tables
                     users.Load(reader);
                     return users;
                 }
+            }
+
+        }
+
+        public static DataTable Get_User_Names()
+        {
+
+            using (SqlConnection conn = new SqlConnection(Conn_String))
+            {
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT user_name FROM Users", conn);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    DataTable users = new DataTable();
+                    users.Load(reader);
+                    return users;
+                }
+            }
+
+        }
+
+        public static void Update_Last_Login(string user_name)
+        {
+
+            using (SqlConnection conn = new SqlConnection(Conn_String))
+            {
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("UPDATE Users SET last_login='" + DateTime.Now + "' WHERE user_name='" + user_name + "'", conn);
+
+                cmd.ExecuteNonQuery();
 
             }
+
         }
     }
 }
