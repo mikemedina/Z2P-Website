@@ -21,7 +21,7 @@ namespace ZeroToProgrammer
 
             try
             {
-                UsersTable.Add(txtUserName.Text, txtPassword.Text, txtEmail.Text,
+                UsersTable.Add(txtUserName.Text, BCrypt.Net.BCrypt.HashPassword(txtPassword.Text), txtEmail.Text,
                                txtFirstName.Text, txtLastName.Text, txtAge.Text);
             }
             catch (Exception ex)
@@ -48,6 +48,7 @@ namespace ZeroToProgrammer
             // Reset Fields
             txtUserName.Text = string.Empty;
             txtPassword.Text = string.Empty;
+            txtConfirmPassword.Text = string.Empty;
             txtEmail.Text = string.Empty;
             txtFirstName.Text = string.Empty;
             txtLastName.Text = string.Empty;
@@ -61,6 +62,7 @@ namespace ZeroToProgrammer
 
             lblUserName.ForeColor = System.Drawing.Color.Black;
             lblPassword.ForeColor = System.Drawing.Color.Black;
+            lblConfirmPassword.ForeColor = System.Drawing.Color.Black;
             lblEmail.ForeColor = System.Drawing.Color.Black;
             lblFirstName.ForeColor = System.Drawing.Color.Black;
             lblLastName.ForeColor = System.Drawing.Color.Black;
@@ -82,7 +84,7 @@ namespace ZeroToProgrammer
                 return false;
             }
 
-            if (txtUserName.Text.Length < 5)
+            if (txtUserName.Text.Length < 6)
             {
                 lblError.Text = "User Name must be at least 6 characters";
                 lblError.Visible = true;
@@ -102,8 +104,8 @@ namespace ZeroToProgrammer
 
             DataTable users;
             try
-            {
-                users = UsersTable.Get_Users();
+            {// TODO Make get_users function in userstable.cs
+                users = UsersTable.Get_User(txtUserName.Text);
             }
             catch (Exception ex)
             {
@@ -134,7 +136,7 @@ namespace ZeroToProgrammer
                 return false;
             }
 
-            if (txtPassword.Text.Length < 7)
+            if (txtPassword.Text.Length < 8)
             {
                 lblError.Text = "Password must be at least 8 characters";
                 lblError.Visible = true;
@@ -152,6 +154,25 @@ namespace ZeroToProgrammer
                 lblError.Visible = true;
 
                 lblPassword.ForeColor = System.Drawing.Color.Red;
+                return false;
+            }
+
+            // Confirm Password
+            if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
+            {
+                lblError.Text = "Please confirm your Password";
+                lblError.Visible = true;
+
+                lblConfirmPassword.ForeColor = System.Drawing.Color.Red;
+                return false;
+            }
+
+            if (txtConfirmPassword.Text != txtPassword.Text)
+            {
+                lblError.Text = "Passwords do not match";
+                lblError.Visible = true;
+
+                lblConfirmPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
 

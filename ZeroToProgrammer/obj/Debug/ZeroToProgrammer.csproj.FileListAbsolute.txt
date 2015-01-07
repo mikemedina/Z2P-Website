@@ -4,3 +4,4 @@ C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\bin\ZeroToProgrammer.pdb
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.csprojResolveAssemblyReference.cache
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.dll
 C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\obj\Debug\ZeroToProgrammer.pdb
+C:\Users\Mike\Desktop\ZeroToProgrammer\ZeroToProgrammer\bin\BCrypt.Net.dll

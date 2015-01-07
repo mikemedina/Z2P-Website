@@ -22,6 +22,10 @@
                 <td><asp:TextBox ID="txtPassword" runat="server" Width="120px" TextMode="Password" MaxLength="15"></asp:TextBox></td>
             </tr>
             <tr>
+                <td><asp:label ID="lblConfirmPassword" runat="server" text="Confirm Password*:"></asp:label></td>
+                <td><asp:TextBox ID="txtConfirmPassword" runat="server" Width="120px" TextMode="Password" MaxLength="15"></asp:TextBox></td>
+            </tr>
+            <tr>
                 <td><asp:label ID="lblEmail" runat="server" text="Email*:"></asp:label></td>
                 <td><asp:TextBox ID="txtEmail" runat="server" Width="150px" MaxLength="28"></asp:TextBox></td>
             </tr>

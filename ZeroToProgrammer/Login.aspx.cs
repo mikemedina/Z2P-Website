@@ -16,25 +16,6 @@ namespace ZeroToProgrammer
 
             Reset_Colors();
 
-            DataTable users;
-            try
-            {
-                users = UsersTable.Get_Users();
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Error loading from database: \n" + ex.Message;
-                lblError.Visible = true;
-                return;
-            }
-
-            if (users.Rows.Count == 0)
-            {
-                lblError.Text = "Please create an account";
-                lblError.Visible = true;
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(txtUserName.Text))
             {
                 lblError.Visible = true;
@@ -53,38 +34,44 @@ namespace ZeroToProgrammer
                 return;
             }
 
-            foreach (DataRow row in users.Rows)
+            DataTable user;
+            try
             {
-                if (txtUserName.Text == row["user_name"].ToString())
+                user = UsersTable.Get_User(txtUserName.Text);
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Error loading from database: \n" + ex.Message;
+                lblError.Visible = true;
+                return;
+            }
+
+            if (BCrypt.Net.BCrypt.Verify(txtPassword.Text, user.Select("password").ToString()))
+            {
+                // Successful Login
+                Reset_Page();
+                lblSuccess.Visible = true;
+
+                lblWelcome.Visible = true;
+
+                DateTime last_login = DateTime.Parse(user.Select("last_login").ToString());
+                if (!string.IsNullOrWhiteSpace(user.Select("first_name").ToString()))
                 {
-                    if (txtPassword.Text == row["password"].ToString())
-                    {
-                        // Successful Login
-                        Reset_Page();
-                        lblSuccess.Visible = true;
-
-                        lblWelcome.Visible = true;
-
-                        DateTime last_login = DateTime.Parse(row["last_login"].ToString());
-                        if (!string.IsNullOrWhiteSpace(row["first_name"].ToString()))
-                        {
-                            lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was at {1: hh:mm} on {1: MM/dd/yy}", row["first_name"].ToString(), last_login);
-                            return;
-                        }
-                        else
-                        {
-                            lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was {1}", row["user_name"].ToString(), last_login);
-                        }
-                    }
-                    else
-                    {
-                        lblError.Visible = true;
-                        lblError.Text = "Incorrect Password";
-
-                        lblPassword.ForeColor = System.Drawing.Color.Red;
-                        return;
-                    }
+                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was at {1: hh:mm} on {1: MM/dd/yy}", user.Select("first_name").ToString(), last_login);
+                    return;
                 }
+                else
+                {
+                    lblWelcome.Text = string.Format("Welcome, {0}! Your last visit was {1}", user.Select("user_name").ToString(), last_login);
+                }
+            }
+            else
+            {
+                lblError.Visible = true;
+                lblError.Text = "Incorrect Password";
+
+                lblPassword.ForeColor = System.Drawing.Color.Red;
+                return;
             }
 
             // User Name match never found
@@ -110,6 +97,8 @@ namespace ZeroToProgrammer
             // Reset Fields
             txtUserName.Text = string.Empty;
             txtPassword.Text = string.Empty;
+
+            Reset_Colors();
 
         }
 
