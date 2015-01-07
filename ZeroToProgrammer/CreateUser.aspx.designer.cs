@@ -13,15 +13,6 @@ namespace ZeroToProgrammer {
     public partial class CreateUser {
         
         /// <summary>
-        /// frmCreateUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm frmCreateUser;
-        
-        /// <summary>
         /// lblError control.
         /// </summary>
         /// <remarks>

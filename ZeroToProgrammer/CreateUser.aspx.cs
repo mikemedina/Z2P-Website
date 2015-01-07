@@ -8,6 +8,24 @@ namespace ZeroToProgrammer
 {
     public partial class CreateUser : System.Web.UI.Page
     {
+        private Site _masterPage;
+        private Site MasterPage
+        {
+
+            get
+            {
+                if (_masterPage == null)
+                    _masterPage = Page.Master as Site;
+
+                return _masterPage;
+            }
+            set
+            {
+                _masterPage = value;
+            }
+
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
         }
@@ -26,24 +44,18 @@ namespace ZeroToProgrammer
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error saving to database: \n" + ex.Message;
-                lblError.Visible = true;
+                MasterPage.SetError("Error saving to database: \n" + ex.Message);
                 return;
             }
 
             Reset_Page();
 
-            lblSuccess.Visible = true;
+            MasterPage.SetSuccess("Account successfully created!");
 
         }
 
         private void Reset_Page()
         {
-
-            // Reset Labels
-            lblError.Visible = false;
-            lblError.Text = string.Empty;
-            lblSuccess.Visible = false;
 
             // Reset Fields
             txtUserName.Text = string.Empty;
@@ -77,28 +89,19 @@ namespace ZeroToProgrammer
             Regex rgx_usr_name = new Regex("[^A-Za-z0-9]");
             if (string.IsNullOrWhiteSpace(txtUserName.Text))
             {
-                lblError.Text = "Please enter a User Name";
-                lblError.Visible = true;
-
-                lblUserName.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("Please enter a User Name");
                 return false;
             }
 
             if (txtUserName.Text.Length < 6)
             {
-                lblError.Text = "User Name must be at least 6 characters";
-                lblError.Visible = true;
-
-                lblUserName.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("User Name must be at least 6 characters");
                 return false;
             }
 
             if (rgx_usr_name.IsMatch(txtUserName.Text))
             {
-                lblError.Text = "User Name must be alphanumeric";
-                lblError.Visible = true;
-
-                lblUserName.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("User Name must be alphanumeric");
                 return false;
             }
 
@@ -109,8 +112,7 @@ namespace ZeroToProgrammer
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error loading from database: \n" + ex.Message;
-                lblError.Visible = true;
+                MasterPage.SetError("Error loading from database: \n" + ex.Message);
                 return false;
             }
 
@@ -118,9 +120,7 @@ namespace ZeroToProgrammer
             {
                 if (txtUserName.Text == row["user_name"].ToString())
                 {
-                    lblError.Text = "This User Name already exists";
-                    lblError.Visible = true;
-
+                    MasterPage.SetError("This User Name already exists");
                     lblUserName.ForeColor = System.Drawing.Color.Red;
                     return false;
                 }
@@ -129,18 +129,14 @@ namespace ZeroToProgrammer
             // Password
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Text = "Please enter a Password";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Please enter a Password");
                 lblPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
 
             if (txtPassword.Text.Length < 8)
             {
-                lblError.Text = "Password must be at least 8 characters";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Password must be at least 8 characters");
                 lblPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -150,9 +146,7 @@ namespace ZeroToProgrammer
                && (txtPassword.Text.Any(c => char.IsSymbol(c))
                ||  txtPassword.Text.Any(c => char.IsPunctuation(c)))))
             {
-                lblError.Text = "Password must contain at least one letter, one number, and one symbol";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Password must contain at least one letter, one number, and one symbol");
                 lblPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -160,18 +154,14 @@ namespace ZeroToProgrammer
             // Confirm Password
             if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
             {
-                lblError.Text = "Please confirm your Password";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Please confirm your Password");
                 lblConfirmPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
 
             if (txtConfirmPassword.Text != txtPassword.Text)
             {
-                lblError.Text = "Passwords do not match";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Passwords do not match");
                 lblConfirmPassword.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -183,9 +173,7 @@ namespace ZeroToProgrammer
             }
             catch
             {
-                lblError.Text = "Invalid Email Address";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Invalid Email Address");
                 lblEmail.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -194,9 +182,7 @@ namespace ZeroToProgrammer
             Regex rgx_names = new Regex("[^A-Za-z]");
             if (!string.IsNullOrEmpty(txtFirstName.Text) && rgx_names.IsMatch(txtFirstName.Text))
             {
-                lblError.Text = "First Name must contain only letters";
-                lblError.Visible = true;
-
+                MasterPage.SetError("First Name must contain only letters");
                 lblFirstName.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -204,9 +190,7 @@ namespace ZeroToProgrammer
             // Last Name
             if (!string.IsNullOrEmpty(txtLastName.Text) && rgx_names.IsMatch(txtLastName.Text))
             {
-                lblError.Text = "Last Name must contain only letters";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Last Name must contain only letters");
                 lblLastName.ForeColor = System.Drawing.Color.Red;
                 return false;
             }
@@ -214,9 +198,7 @@ namespace ZeroToProgrammer
             // Age
             if (!txtAge.Text.All(c => char.IsNumber(c)))
             {
-                lblError.Text = "Age must contain only numbers";
-                lblError.Visible = true;
-
+                MasterPage.SetError("Age must contain only numbers");
                 lblAge.ForeColor = System.Drawing.Color.Red;
                 return false;
             }

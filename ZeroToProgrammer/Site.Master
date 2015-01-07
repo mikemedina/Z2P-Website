@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="ZeroToProgrammer.Site" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <div id="divUserInfo" runat="server" style="float: right">
+
+        </div>
+
+        <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="False"></asp:Label>
+        <br />
+        <br />
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+
+        <br />
+        <br />
+        <asp:Label ID="lblSuccess" runat="server" ForeColor="Green" Visible="False"></asp:Label>
+
+    </form>
+</body>
+</html>

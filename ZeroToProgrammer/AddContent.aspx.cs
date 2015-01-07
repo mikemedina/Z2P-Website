@@ -5,6 +5,24 @@ namespace ZeroToProgrammer
 {
     public partial class AddContent : System.Web.UI.Page
     {
+        private Site _masterPage;
+        private Site MasterPage
+        {
+
+            get
+            {
+                if (_masterPage == null)
+                    _masterPage = Page.Master as Site;
+
+                return _masterPage;
+            }
+            set
+            {
+                _masterPage = value;
+            }
+
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
         }
@@ -20,25 +38,18 @@ namespace ZeroToProgrammer
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error saving to database: \n" + ex.Message;
-                lblError.Visible = true;
+                MasterPage.SetError("Error saving to database: \n" + ex.Message);
                 return;
             }
 
             Reset_Page();
 
-            lblSuccess.Text = "Submission Successful";
-            lblSuccess.Visible = true;
+            MasterPage.SetSuccess("Submission Successful");
 
         }
 
         private void Reset_Page()
             {
-
-                // Reset labels
-                lblError.Text = string.Empty;
-                lblError.Visible = false;
-                lblSuccess.Visible = false;
 
                 // Reset fields
                 txtTitle.Text = string.Empty;
@@ -50,15 +61,13 @@ namespace ZeroToProgrammer
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                lblError.Text = "Please enter a title";
-                lblError.Visible = true;
+                MasterPage.SetError("Please enter a title");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtContent.Text))
             {
-                lblError.Text = "Please enter something into the content area";
-                lblError.Visible = true;
+                MasterPage.SetError("Please enter something into the content area");
                 return false;
             }
             return true;

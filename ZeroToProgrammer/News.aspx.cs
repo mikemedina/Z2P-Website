@@ -8,11 +8,26 @@ namespace ZeroToProgrammer
 {
     public partial class News : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        private Site _masterPage;
+        private Site MasterPage
         {
 
-            lblError.Text = string.Empty;
-            lblError.Visible = false;
+            get
+            {
+                if (_masterPage == null)
+                    _masterPage = Page.Master as Site;
+
+                return _masterPage;
+            }
+            set
+            {
+                _masterPage = value;
+            }
+
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
             Build_News_Section();
             
@@ -28,15 +43,13 @@ namespace ZeroToProgrammer
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error loading from database: \n" + ex.Message;
-                lblError.Visible = true;
+                MasterPage.SetError("Error loading from database: \n" + ex.Message);
                 return;
             }
 
             if (news.Rows.Count == 0)
             {
-                lblError.Text = "No results found";
-                lblError.Visible = true;
+                MasterPage.SetError("No results found");
                 return;
             }
 

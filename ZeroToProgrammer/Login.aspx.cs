@@ -1,11 +1,30 @@
 ﻿using System;
 using System.Data;
+using System.Web.Security;
 using ZeroToProgrammer.Tables;
 
 namespace ZeroToProgrammer
 {
     public partial class Login : System.Web.UI.Page
     {
+        private Site _masterPage;
+        private Site MasterPage
+        {
+
+            get
+            {
+                if (_masterPage == null)
+                    _masterPage = Page.Master as Site;
+
+                return _masterPage;
+            }
+            set
+            {
+                _masterPage = value;
+            }
+
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -14,8 +33,6 @@ namespace ZeroToProgrammer
         protected void btnLogin_Click(object sender, EventArgs e)
         {
 
-            Reset_Colors();
-
             DataTable user;
             try
             {
@@ -23,35 +40,25 @@ namespace ZeroToProgrammer
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error loading from database: \n" + ex.Message;
-                lblError.Visible = true;
+                MasterPage.SetError("Error loading from database: \n" + ex.Message);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtUserName.Text))
             {
-                lblError.Visible = true;
-                lblError.Text = "Please enter a User Name";
-
-                lblUserName.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("Please enter a User Name");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Visible = true;
-                lblError.Text = "Please enter a Password";
-
-                lblPassword.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("Please enter a Password");
                 return;
             }
 
             if (user.Rows.Count == 0)
             {
-                lblError.Visible = true;
-                lblError.Text = "Incorrect User Name";
-
-                lblUserName.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("Incorrect User Name or Password");
                 return;
             }
 
@@ -59,8 +66,7 @@ namespace ZeroToProgrammer
             {
                 // Successful Login
                 Reset_Page();
-                lblSuccess.Visible = true;
-
+                MasterPage.SetSuccess("Login Successful");
                 lblWelcome.Visible = true;
 
                 DateTime last_login = DateTime.Parse(user.Rows[0]["last_login"].ToString());
@@ -74,23 +80,17 @@ namespace ZeroToProgrammer
                 }
 
                 UsersTable.Update_Last_Login(user.Rows[0]["user_name"].ToString());
+
+                // Redirects user to the page they were redirected to the login screen from
+                FormsAuthentication.RedirectFromLoginPage(txtUserName.Text, false);
+
                 return;
             }
             else
             {
-                lblError.Visible = true;
-                lblError.Text = "Incorrect Password";
-
-                lblPassword.ForeColor = System.Drawing.Color.Red;
+                MasterPage.SetError("Incorrect User Name or Password");
                 return;
             }
-
-            // User Name match never found
-            lblError.Visible = true;
-            lblError.Text = "Incorrect Username";
-
-            lblUserName.ForeColor = System.Drawing.Color.Red;
-            return;
 
         }
 
@@ -98,25 +98,12 @@ namespace ZeroToProgrammer
         {
 
             // Reset Labels
-            lblError.Visible = false;
-            lblError.Text = string.Empty;
             lblWelcome.Visible = false;
             lblWelcome.Text = string.Empty;
-            lblSuccess.Visible = false;
 
             // Reset Fields
             txtUserName.Text = string.Empty;
             txtPassword.Text = string.Empty;
-
-            Reset_Colors();
-
-        }
-
-        private void Reset_Colors()
-        {
-
-            lblUserName.ForeColor = System.Drawing.Color.Black;
-            lblPassword.ForeColor = System.Drawing.Color.Black;
 
         }
 
